@@ -1,1 +1,1 @@
-A port of [https://github.com/mourner/suncalc] in [Go](http://golang.org).
+A port of [SunCalc](https://github.com/mourner/suncalc) in [Go](http://golang.org).
