@@ -1,7 +1,6 @@
-package main
+package suncalc
 
 import (
-	"fmt"
 	m "math"
 	"time"
 )
@@ -144,10 +143,6 @@ func SunTimes(t time.Time, lat, lng float64) map[string]time.Time {
 	return times
 }
 
-func main() {
-	azimuth, altitude := SunPosition(time.Now(), 50.5, 30.5)
-	fmt.Println("position", azimuth, altitude)
-
-	times := SunTimes(time.Now(), 50.5, 30.5)
-	fmt.Println("times", times)
-}
+// example:
+// azimuth, altitude := SunPosition(time.Now(), 50.5, 30.5)
+// times := SunTimes(time.Now(), 50.5, 30.5)
