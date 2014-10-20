@@ -133,7 +133,7 @@ func SunTimes(t time.Time, lat, lng float64) map[string]time.Time {
 	}
 
 	for _, sunAngle := range sunAngles {
-		jSet := getSetJ(sunAngle.angle * rad, lw, phi, dec, n, M, L)
+		jSet := getSetJ(sunAngle.angle * rad, lw, phi, dec, n, m, l)
 
 		times[sunAngle.riseName] = fromJulian(jNoon - (jSet - jNoon))
 		times[sunAngle.setName] = fromJulian(jSet)
@@ -141,7 +141,6 @@ func SunTimes(t time.Time, lat, lng float64) map[string]time.Time {
 
 	return times
 }
-
 
 func main() {
 	azimuth, altitude := SunPosition(time.Now(), 50.5, 30.5)
