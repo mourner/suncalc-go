@@ -143,6 +143,36 @@ func SunTimes(t time.Time, lat, lng float64) map[string]time.Time {
 	return times
 }
 
+// moon calculations, based on http://aa.quae.nl/en/reken/hemelpositie.html formulas
+
+func moonCoords(d float64) (float64, float64, float64) { // geocentric ecliptic coordinates of the moon
+	el := rad * (218.316 + 13.176396 * d) // ecliptic longitude
+	ma := rad * (134.963 + 13.064993 * d) // mean anomaly
+	f  := rad * (93.272  + 13.229350 * d) // mean distance
+
+	l := rad * 6.289 * m.Sin(ma) + el // longitude
+	b := rad * 5.128 * m.Sin(f)       // latitude
+
+	dist := 385001 - 20905 * m.Cos(ma) // distance to the moon in km
+
+	return declination(l, b), rightAscension(l, b), dist
+}
+
+func MoonPosition(t time.Time, lat, lng float64) (float64, float64, float64) {
+	lw := rad * -lng
+	phi := rad * lat
+	d := toDays(t)
+
+	dec, ra, dist := moonCoords(d)
+	ha := siderealTime(d, lw) - ra
+	h := altitude(ha, phi, dec)
+
+	// altitude correction for refraction
+	h = h + rad * 0.017 / m.Tan(h + rad * 10.26 / (h + rad * 5.10))
+
+	return azimuth(ha, phi, dec), h, dist
+}
+
 // example:
 // azimuth, altitude := SunPosition(time.Now(), 50.5, 30.5)
 // times := SunTimes(time.Now(), 50.5, 30.5)
